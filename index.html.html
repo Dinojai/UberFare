@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uber 車資計算器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-gray-100 p-6 rounded-2xl shadow-xl text-black">
+    <h1 class="text-2xl font-bold text-center mb-6 text-cyan-600">Uber 車資計算器</h1>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">城市</label>
+      <input type="text" value="香港 Hong Kong" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">車種類型</label>
+      <select id="carType" class="w-full rounded bg-white text-black p-2 border border-gray-300" onchange="updateTripOptions()">
+        <option value="">請選擇車種類型</option>
+        <option value="UberX">UberX</option>
+        <option value="Comfort">Comfort</option>
+        <option value="Plus">商務菁英Plus</option>
+        <option value="UberXL">UberXL</option>
+        <option value="UberXXL">UberXXL</option>
+        <option value="Black">Black</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">行程類型</label>
+      <select id="tripType" class="w-full rounded bg-white text-black p-2 border border-gray-300" onchange="updateFareRates()">
+        <option value="">請選擇行程類型</option>
+      </select>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">距離（公里）</label>
+        <input type="number" id="distance" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">時間（分鐘）</label>
+        <input type="number" id="duration" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">加乘金額</label>
+        <input type="number" id="surcharge" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">估算倍率</label>
+        <input type="number" id="multiplier" value="1.0" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">等候費</label>
+        <input type="number" id="waitingFee" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">貼士</label>
+        <input type="number" id="tip" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">附加費</label>
+        <input type="number" id="additionalFee" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+      </div>
+    </div>
+
+    <hr class="my-4 border-gray-400">
+    <h2 class="text-xl font-semibold text-center mb-4">行程收費表</h2>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">起步價</label>
+        <input type="number" id="baseFare" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">最低車資</label>
+        <input type="number" id="minFare" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">每公里</label>
+        <input type="number" id="perKm" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">每分鐘</label>
+        <input type="number" id="perMin" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+      </div>
+    </div>
+
+    <div class="flex gap-4 mb-4">
+      <button onclick="resetFields()" class="w-1/2 bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg">重置</button>
+      <button onclick="calculateFare()" class="w-1/2 bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-2 px-4 rounded-lg">計算車資</button>
+    </div>
+
+    <div id="result" class="text-center text-lg font-semibold text-green-600 mt-4"></div>
+  </div>
+
+<script>
+  const fareData = {
+    UberX: {
+      "所有其他行程": { baseFare: 18, minFare: 40.95, perMin: 2.04 },
+      "由機場出發的行程": { baseFare: 18, minFare: 40.95, perMin: 2.04 },
+      "前往機場的行程": { baseFare: 18, minFare: 42.95, perMin: 2.04 }
+    },
+    Comfort: {
+      "所有其他行程": { baseFare: 26.85, perKm: 6.29, perMin: 1.6, minFare: 56 },
+      "由機場出發的行程": { baseFare: 26.85, perKm: 5.97, perMin: 1.6, minFare: 56 }
+    },
+    Plus: {
+      "所有其他行程": { baseFare: 26.85, perKm: 6.29, perMin: 1.6, minFare: 56 },
+      "由機場出發的行程": { baseFare: 26.85, perKm: 5.97, perMin: 1.6, minFare: 56 }
+    },
+    UberXL: {
+      "所有其他行程": { baseFare: 40, perKm: 8.68, perMin: 1.9, minFare: 75 },
+      "由機場出發的行程": { baseFare: 40, perKm: 8.25, perMin: 1.9, minFare: 75 }
+    },
+    UberXXL: {
+      "所有其他行程": { baseFare: 45, perKm: 9.22, perMin: 1.9, minFare: 80 },
+      "由機場出發的行程": { baseFare: 45, perKm: 8.76, perMin: 1.9, minFare: 80 }
+    },
+    Black: {
+      "所有其他行程": { baseFare: 45, perKm: 9.22, perMin: 1.9, minFare: 90 },
+      "由機場出發的行程": { baseFare: 45, perKm: 8.76, perMin: 1.9, minFare: 90 }
+    }
+  };
+
+  function updateTripOptions() {
+    const car = document.getElementById("carType").value;
+    const trip = document.getElementById("tripType");
+    trip.innerHTML = '<option value="">請選擇行程類型</option>';
+    if (!car) return;
+    Object.keys(fareData[car]).forEach(type => {
+      const opt = new Option(type, type);
+      trip.appendChild(opt);
+    });
+  }
+
+  function updateFareRates() {
+    const car = document.getElementById("carType").value;
+    const trip = document.getElementById("tripType").value;
+    const km = parseFloat(document.getElementById("distance").value) || 0;
+    const base = fareData[car]?.[trip];
+    if (!base) return;
+
+    const perKm = car === 'UberX' ? getUberXPerKm(km, trip) : base.perKm || 0;
+
+    document.getElementById("baseFare").value = base.baseFare;
+    document.getElementById("minFare").value = base.minFare;
+    document.getElementById("perKm").value = perKm;
+    document.getElementById("perMin").value = base.perMin;
+  }
+
+  function getUberXPerKm(km, trip) {
+    if (trip === "所有其他行程") {
+      if (km <= 5) return 4.73;
+      if (km <= 10) return 5.23;
+      if (km <= 15) return 5.63;
+      return 4.88;
+    } else if (trip === "由機場出發的行程") {
+      if (km <= 5) return 4.73;
+      if (km <= 10) return 5.23;
+      if (km <= 15) return 5.35;
+      return 4.64;
+    } else if (trip === "前往機場的行程") {
+      if (km <= 5) return 4.97;
+      if (km <= 10) return 5.49;
+      if (km <= 15) return 5.35;
+      return 4.64;
+    }
+    return 0;
+  }
+
+  function calculateFare() {
+    const km = parseFloat(document.getElementById("distance").value) || 0;
+    const min = parseFloat(document.getElementById("duration").value) || 0;
+    const baseFare = parseFloat(document.getElementById("baseFare").value) || 0;
+    const perKm = parseFloat(document.getElementById("perKm").value) || 0;
+    const perMin = parseFloat(document.getElementById("perMin").value) || 0;
+    const minFare = parseFloat(document.getElementById("minFare").value) || 0;
+    const surcharge = parseFloat(document.getElementById("surcharge").value) || 0;
+    const waiting = parseFloat(document.getElementById("waitingFee").value) || 0;
+    const tip = parseFloat(document.getElementById("tip").value) || 0;
+    const addFee = parseFloat(document.getElementById("additionalFee").value) || 0;
+
+    const totalBeforeFee = baseFare + (km * perKm) + (min * perMin) + surcharge + waiting + addFee;
+    const platformFee = (document.getElementById("carType").value === "UberX") ? 0.27 : 0.3;
+
+    const multiplier = totalBeforeFee > 0 ? (surcharge / (km * perKm + min * perMin + baseFare) + 1) : 1;
+    document.getElementById("multiplier").value = multiplier.toFixed(1);
+
+    let final = totalBeforeFee * (1 - platformFee) + tip;
+    if (final < minFare * (1 - platformFee)) {
+      final = minFare * (1 - platformFee);
+    }
+    document.getElementById("result").textContent = `預計車資收取：$${final.toFixed(2)}`;
+  }
+
+  function resetFields() {
+    document.querySelectorAll("input").forEach(el => el.value = "0");
+    document.getElementById("carType").value = "";
+    document.getElementById("tripType").innerHTML = '<option value="">請選擇行程類型</option>';
+    document.getElementById("result").textContent = "";
+  }
+</script>
+</body>
+</html>
