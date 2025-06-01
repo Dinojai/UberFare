@@ -14,7 +14,7 @@
       <a href="#" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">普通行程計算表</a>
       <a href="#" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">預約行程計算表</a>
       <a href="https://tunnel.hk" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各隧道的收費表</a>
-      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平台收費表</a>
+      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平的收費表</a>
     </div>
 
     <div class="mb-4">
@@ -209,16 +209,22 @@
     document.getElementById("result").textContent = `預計車資收取：$${final.toFixed(2)}`;
   }
 
-  function resetFields() {
-    document.querySelectorAll("input:not([id='city'])").forEach(el => el.value = "0");
-    document.getElementById("carType").value = "";
-    document.getElementById("tripType").innerHTML = '<option value="">請選擇行程類型</option>';
-    document.getElementById("result").textContent = "";
-    document.getElementById("baseFare").value = "";
-    document.getElementById("minFare").value = "";
-    document.getElementById("perKm").value = "";
-    document.getElementById("perMin").value = "";
-  }
+    function resetFields() {
+      document.getElementById("carType").value = "";
+      document.getElementById("tripType").innerHTML = '<option value="">請選擇行程類型</option>';
+      document.getElementById("duration").value = "0";
+      document.getElementById("distance").value = "0";
+      document.getElementById("surcharge").value = "0";
+      document.getElementById("multiplier").value = "1.0";
+      document.getElementById("waitingFee").value = "0";
+      document.getElementById("tip").value = "0";
+      document.getElementById("additionalFee").value = "0";
+      document.getElementById("baseFare").value = "";
+      document.getElementById("minFare").value = "";
+      document.getElementById("perKm").value = "";
+      document.getElementById("perMin").value = "";
+      document.getElementById("result").textContent = "";
+    }
 </script>
 </body>
 </html>
