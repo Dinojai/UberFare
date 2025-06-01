@@ -12,7 +12,7 @@
 
     <div class="mb-4">
       <label class="block text-sm font-medium mb-1">城市</label>
-      <input type="text" value="香港 Hong Kong" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+      <input type="text" id="city" value="香港 Hong Kong" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
     </div>
 
     <div class="mb-4">
@@ -203,7 +203,7 @@
   }
 
   function resetFields() {
-    document.querySelectorAll("input").forEach(el => el.value = "0");
+    document.querySelectorAll("input:not([id='city'])").forEach(el => el.value = "0");
     document.getElementById("carType").value = "";
     document.getElementById("tripType").innerHTML = '<option value="">請選擇行程類型</option>';
     document.getElementById("result").textContent = "";
