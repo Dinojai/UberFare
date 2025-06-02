@@ -219,30 +219,34 @@
     return 0;
   }
 
-  function calculateFare() {
-    const km = parseFloat(document.getElementById("distance").value) || 0;
-    const min = parseFloat(document.getElementById("duration").value) || 0;
-    const baseFare = parseFloat(document.getElementById("baseFare").value) || 0;
-    const perKm = parseFloat(document.getElementById("perKm").value) || 0;
-    const perMin = parseFloat(document.getElementById("perMin").value) || 0;
-    const minFare = parseFloat(document.getElementById("minFare").value) || 0;
-    const surcharge = parseFloat(document.getElementById("surcharge").value) || 0;
-    const waiting = parseFloat(document.getElementById("waitingFee").value) || 0;
-    const tip = parseFloat(document.getElementById("tip").value) || 0;
-    const addFee = parseFloat(document.getElementById("additionalFee").value) || 0;
+      function calculateFare() {
+        const baseFare = parseFloat(document.getElementById("baseFare").value) || 0;
+        const perKm = parseFloat(document.getElementById("perKm").value) || 0;
+        const perMin = parseFloat(document.getElementById("perMin").value) || 0;
+        const minFare = parseFloat(document.getElementById("minFare").value) || 0;
+        const distance = parseFloat(document.getElementById("distance").value) || 0;
+        const duration = parseFloat(document.getElementById("duration").value) || 0;
+        const surcharge = parseFloat(document.getElementById("surcharge").value) || 0;
+        const waiting = parseFloat(document.getElementById("waitingFee").value) || 0;
+        const tip = parseFloat(document.getElementById("tip").value) || 0;
+        const addFee = parseFloat(document.getElementById("additionalFee").value) || 0;
 
-    const totalBeforeFee = baseFare + (km * perKm) + (min * perMin) + surcharge + waiting + addFee;
-    const platformFee = (document.getElementById("carType").value === "UberX") ? 0.27 : 0.3;
+        const carType = document.getElementById("carType").value;
+        const platformRate = carType === "UberX" ? 0.27 : 0.30;
 
-    const multiplier = totalBeforeFee > 0 ? (surcharge / (km * perKm + min * perMin + baseFare) + 1) : 1;
-    document.getElementById("multiplier").value = multiplier.toFixed(1);
+        const subtotal = baseFare + distance * perKm + duration * perMin + surcharge + waiting + addFee;
+        const multiplier = subtotal > 0 ? (surcharge / (distance * perKm + duration * perMin + baseFare) + 1) : 1;
+        document.getElementById("multiplier").value = multiplier.toFixed(1);
 
-    let final = totalBeforeFee * (1 - platformFee) + tip;
-    if (final < minFare * (1 - platformFee)) {
-      final = minFare * (1 - platformFee);
-    }
-    document.getElementById("result").textContent = `預計車資收取：$${final.toFixed(2)}`;
-  }
+        let total = subtotal * (1 - platformRate) + tip;
+        const minTotal = (minFare + addFee) * (1 - platformRate);
+
+        if (total < minTotal) {
+          total = minTotal;
+        }
+
+        document.getElementById("result").textContent = `預計車資收取：$${total.toFixed(2)}`;
+      }
 
     function resetFields() {
       document.getElementById("carType").value = "";
