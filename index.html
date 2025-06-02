@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Uber 車資計算器</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -14,7 +14,7 @@
       <a href="#" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">普通行程計算表</a>
       <a href="#" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">預約行程計算表</a>
       <a href="https://tunnel.hk" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各隧道的收費表</a>
-      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平台收費表</a>
+      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平的收費表</a>
     </div>
 
     <div class="mb-4">
@@ -91,6 +91,9 @@
         <label class="block text-sm font-medium mb-1">最低車資</label>
         <input type="number" id="minFare" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
       </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-2">
       <div>
         <label class="block text-sm font-medium mb-1">每公里</label>
         <input type="number" id="perKm" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
@@ -101,7 +104,12 @@
       </div>
     </div>
 
-    <div class="flex gap-4 mb-4">
+    <div class="mb-6">
+      <label class="block text-sm font-medium mb-1">平台費 (%)</label>
+      <input type="text" id="platformFee" value="" disabled readonly class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+    </div>
+
+    <div class="flex gap-4">
       <button onclick="resetFields()" class="w-1/2 bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg">重置</button>
       <button onclick="calculateFare()" class="w-1/2 bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-2 px-4 rounded-lg">計算車資</button>
     </div>
@@ -223,8 +231,23 @@
       document.getElementById("minFare").value = "";
       document.getElementById("perKm").value = "";
       document.getElementById("perMin").value = "";
+      document.getElementById("platformFee").value = "";
       document.getElementById("result").textContent = "";
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const carTypeEl = document.getElementById("carType");
+      carTypeEl?.addEventListener("change", () => {
+        const platformFeeEl = document.getElementById("platformFee");
+        if (carTypeEl.value === "UberX") {
+          platformFeeEl.value = "27%";
+        } else if (carTypeEl.value !== "") {
+          platformFeeEl.value = "30%";
+        } else {
+          platformFeeEl.value = "";
+        }
+      });
+    });
 </script>
 </body>
 </html>
