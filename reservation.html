@@ -10,20 +10,20 @@
   <div class="w-full max-w-md bg-gray-100 p-6 rounded-2xl shadow-xl text-black">
     <h1 class="text-2xl font-bold text-center mb-4 text-cyan-600">Uber 車資計算器</h1>
 
-    <div class="flex flex-wrap justify-center gap-2 mb-6">
-      <a href="index.html" id="link-main" class="px-3 py-1 rounded hover:bg-cyan-600">普通行程計算表</a>
-      <a href="#" id="link-reservation" class="px-3 py-1 rounded hover:bg-cyan-600">預約行程計算表</a>
-      <a href="https://tunnel.hk" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各隧道的收費表</a>
-      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平台收費表</a>
+    <div class="flex flex-wrap justify-between items-center gap-1 text-sm mb-6">
+      <a href="index.html" id="link-main" class="flex-1 text-center px-2 py-1 rounded hover:bg-cyan-600">普通行程</a>
+      <a href="#" id="link-reservation" class="flex-1 text-center px-2 py-1 rounded hover:bg-cyan-600">提前預約</a>
+      <a href="https://tunnel.hk" target="_blank" class="flex-1 text-center bg-cyan-500 text-white px-2 py-1 rounded hover:bg-cyan-600">隧道收費</a>
+      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="flex-1 text-center bg-cyan-500 text-white px-2 py-1 rounded hover:bg-cyan-600">平台收費</a>
     </div>
 
     <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">城市</label>
+      <label class="block text-sm font-medium mb-1">城市<span class="text-xs text-gray-600"> City</label>
       <input type="text" id="city" value="香港 Hong Kong" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
     </div>
 
     <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">車種類型</label>
+      <label class="block text-sm font-medium mb-1">車種類型<span class="text-xs text-gray-600"> Car Type</label>
       <select id="carType" class="w-full rounded bg-white text-black p-2 border border-gray-300" onchange="updateTripOptions()">
         <option value="">請選擇車種類型</option>
         <option value="UberX">UberX</option>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">行程類型</label>
+      <label class="block text-sm font-medium mb-1">行程類型<span class="text-xs text-gray-600"> Trip Type</label>
       <select id="tripType" class="w-full rounded bg-white text-black p-2 border border-gray-300" onchange="updateFareRates()">
         <option value="">請選擇行程類型</option>
       </select>
@@ -44,38 +44,38 @@
 
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
-        <label class="block text-sm font-medium mb-1">時間（分鐘）</label>
-        <input type="number" id="duration" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+        <label class="block text-sm font-medium mb-1">時間（分鐘）<span class="text-xs text-gray-600"> Time (Mins)</label>
+        <input type="number" id="duration" value="" class="w-full rounded bg-white text-black p-2 border border-gray-300">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1">距離（公里）</label>
-        <input type="number" id="distance" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300" oninput="updateFareRates()">
+        <label class="block text-sm font-medium mb-1">距離（公里）<span class="text-xs text-gray-600"> Distance (Km)</label>
+        <input type="number" id="distance" value="" class="w-full rounded bg-white text-black p-2 border border-gray-300" oninput="updateFareRates()">
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
-        <label class="block text-sm font-medium mb-1">加乘金額</label>
-        <input type="number" id="surcharge" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+        <label class="block text-sm font-medium mb-1">加乘金額<span class="text-xs text-gray-600"> Surcharge</label>
+        <input type="number" id="surcharge" value="" class="w-full rounded bg-white text-black p-2 border border-gray-300">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1">估算倍率</label>
+        <label class="block text-sm font-medium mb-1">估算倍率<span class="text-xs text-gray-600"> Estimated Multiplier</label>
         <input type="number" id="multiplier" value="1.0" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
       </div>
     </div>
 
     <div class="grid grid-cols-3 gap-4 mb-4">
       <div>
-        <label class="block text-sm font-medium mb-1">等候費</label>
-        <input type="number" id="waitingFee" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+        <label class="block text-sm font-medium mb-1">等候費<BR><span class="text-xs text-gray-600">Waiting Fee</label>
+        <input type="number" id="waitingFee" value="" class="w-full rounded bg-white text-black p-2 border border-gray-300">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1">貼士</label>
-        <input type="number" id="tip" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+        <label class="block text-sm font-medium mb-1">貼士<BR><span class="text-xs text-gray-600">Tips</label>
+        <input type="number" id="tip" value="" class="w-full rounded bg-white text-black p-2 border border-gray-300">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1">附加費</label>
-        <input type="number" id="additionalFee" value="0" class="w-full rounded bg-white text-black p-2 border border-gray-300">
+        <label class="block text-sm font-medium mb-1">附加費<BR><span class="text-xs text-gray-600">Additional Fee</label>
+        <input type="number" id="additionalFee" value="" class="w-full rounded bg-white text-black p-2 border border-gray-300">
       </div>
     </div>
 
@@ -84,29 +84,38 @@
 
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
-        <label class="block text-sm font-medium mb-1">起步價</label>
+        <label class="block text-sm font-medium mb-1">起步價<span class="text-xs text-gray-600"> Base Fare</label>
         <input type="number" id="baseFare" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1">最低車資</label>
+        <label class="block text-sm font-medium mb-1">最低車資<span class="text-xs text-gray-600"> Minimum Fare</label>
         <input type="number" id="minFare" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-4 mb-2">
       <div>
-        <label class="block text-sm font-medium mb-1">每公里</label>
+        <label class="block text-sm font-medium mb-1">每公里<span class="text-xs text-gray-600"> Per Km</label>
         <input type="number" id="perKm" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1">每分鐘</label>
+        <label class="block text-sm font-medium mb-1">每分鐘<span class="text-xs text-gray-600"> Per Min</label>
         <input type="number" id="perMin" disabled class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
       </div>
     </div>
 
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-1">平台費 (%)</label>
-      <input type="text" id="platformFee" value="" disabled readonly class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">平台費 (%)<span class="text-xs text-gray-600"> Platform Fee (%)</label>
+        <input type="text" id="platformFee" disabled readonly class="w-full rounded bg-gray-200 text-black p-2 border border-gray-300">
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">備註<span class="text-xs text-gray-600"> Note</label>
+          <textarea disabled rows="3" class="w-full rounded bg-white text-red-600 text-xs p-2 border border-gray-300 leading-snug resize-none">
+「實收金額」及「預計收取」相差以下數目才有機會車資審查成功。
+    Uber X & Comfort: $30
+    Uber XL, Uber XXL & Black: $20
+          </textarea>
     </div>
 
     <div class="flex gap-4">
@@ -248,23 +257,25 @@
         document.getElementById("result").textContent = `預計車資收取：$${total.toFixed(2)}`;
       }
 
-    function resetFields() {
-      document.getElementById("carType").value = "";
-      document.getElementById("tripType").innerHTML = '<option value="">請選擇行程類型</option>';
-      document.getElementById("duration").value = "0";
-      document.getElementById("distance").value = "0";
-      document.getElementById("surcharge").value = "0";
-      document.getElementById("multiplier").value = "1.0";
-      document.getElementById("waitingFee").value = "0";
-      document.getElementById("tip").value = "0";
-      document.getElementById("additionalFee").value = "0";
-      document.getElementById("baseFare").value = "";
-      document.getElementById("minFare").value = "";
-      document.getElementById("perKm").value = "";
-      document.getElementById("perMin").value = "";
-      document.getElementById("platformFee").value = "";
-      document.getElementById("result").textContent = "";
-    }
+function resetFields() {
+  document.getElementById("city").value = "香港 Hong Kong";
+  document.getElementById("carType").value = "";
+  document.getElementById("tripType").innerHTML = '<option value="">請選擇行程類型</option>';
+  document.getElementById("multiplier").value = "1.0";
+
+  const clearIds = [
+    "duration", "distance", "surcharge", "waitingFee",
+    "tip", "additionalFee", "baseFare", "minFare",
+    "perKm", "perMin", "platformFee"
+  ];
+
+  clearIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+
+  document.getElementById("result").textContent = "";
+}
 
     document.addEventListener('DOMContentLoaded', () => {
       const carTypeEl = document.getElementById("carType");
