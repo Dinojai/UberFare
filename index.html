@@ -11,11 +11,19 @@
     <h1 class="text-2xl font-bold text-center mb-4 text-cyan-600">Uber 車資計算器</h1>
 
     <div class="flex flex-wrap justify-center gap-2 mb-6">
-      <a href="#" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">普通行程計算表</a>
-      <a href="#" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">預約行程計算表</a>
+      <a href="#" id="link-main" class="px-3 py-1 rounded hover:bg-cyan-600">普通行程計算表</a>
+      <a href="reservation.html" id="link-reservation" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">預約行程計算表</a>
       <a href="https://tunnel.hk" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各隧道的收費表</a>
-      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平的收費表</a>
+      <a href="https://drive.google.com/file/d/1Lufs600EOyoDcsddQbay5_d7W3Rg2lga/view?usp=drive_link" target="_blank" class="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600">各大平台收費表</a>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("link-main").classList.add("bg-red-500", "text-white");
+        document.getElementById("link-reservation").classList.remove("bg-red-500");
+        document.getElementById("link-reservation").classList.add("bg-cyan-500", "text-white");
+      });
+    </script>
 
     <div class="mb-4">
       <label class="block text-sm font-medium mb-1">城市</label>
